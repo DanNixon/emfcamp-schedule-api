@@ -1,0 +1,14 @@
+[package]
+name = "emfcamp-schedule-api-adapter"
+license.workspace = true
+version.workspace = true
+edition.workspace = true
+
+[dependencies]
+axum.workspace = true
+axum-extra.workspace = true
+chrono.workspace = true
+emfcamp-schedule-api.workspace = true
+serde.workspace = true
+tokio.workspace = true
+url.workspace = true

@@ -1,0 +1,10 @@
+[package]
+name = "emfcamp-schedule-cli"
+license.workspace = true
+version.workspace = true
+edition.workspace = true
+
+[dependencies]
+emfcamp-schedule-api.workspace = true
+tokio.workspace = true
+url.workspace = true

@@ -1,0 +1,11 @@
+[package]
+name = "emfcamp-schedule-api"
+license.workspace = true
+version.workspace = true
+edition.workspace = true
+
+[dependencies]
+chrono.workspace = true
+reqwest.workspace = true
+serde.workspace = true
+url.workspace = true
