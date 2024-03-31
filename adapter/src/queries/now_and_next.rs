@@ -16,7 +16,7 @@ pub(crate) struct NowAndNextQueryParams {
 
     /// Use this time instead of the actual currrent time when evaluating events against time based filters.
     /// For development use.
-    fake_current_time: Option<DateTime<FixedOffset>>,
+    now: Option<DateTime<FixedOffset>>,
 
     /// Include only events that take place at these venues.
     #[serde(rename = "venue")]
@@ -46,9 +46,7 @@ pub(crate) async fn now_and_next(
 ) -> Response {
     let mut schedule = state.client.get_schedule().await;
 
-    let now = query
-        .fake_current_time
-        .unwrap_or_else(|| Local::now().into());
+    let now = query.now.unwrap_or_else(|| Local::now().into());
 
     let mutators = query.into();
     schedule.mutate(&mutators);
