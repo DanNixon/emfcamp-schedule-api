@@ -4,8 +4,25 @@ use crate::queries::now_and_next::now_and_next;
 use crate::queries::schedule::schedule;
 use crate::queries::venues::venues;
 use axum::{routing::get, Router};
+use clap::Parser;
 use std::net::SocketAddr;
 use tokio::net::TcpListener;
+use tracing::{info, trace};
+use url::Url;
+
+#[derive(Parser)]
+#[clap(version, about)]
+struct Cli {
+    #[clap(
+        long,
+        env,
+        default_value = "https://www.emfcamp.org/schedule/2022.json"
+    )]
+    upstream_api_url: Url,
+
+    #[clap(long, env, default_value = "127.0.0.1:8000")]
+    api_address: SocketAddr,
+}
 
 #[derive(Clone)]
 struct State {
@@ -14,9 +31,12 @@ struct State {
 
 #[tokio::main]
 async fn main() {
-    let client = emfcamp_schedule_api::Client::new(
-        url::Url::parse("https://www.emfcamp.org/schedule/2022.json").unwrap(),
-    );
+    tracing_subscriber::fmt::init();
+
+    let args = Cli::parse();
+
+    trace!("Creating client");
+    let client = emfcamp_schedule_api::Client::new(args.upstream_api_url);
 
     let state = State { client };
 
@@ -26,7 +46,7 @@ async fn main() {
         .route("/venues", get(venues))
         .with_state(state);
 
-    let addr: SocketAddr = ([127, 0, 0, 1], 8000).into();
-    let listener = TcpListener::bind(&addr).await.unwrap();
+    info!("API shim running at {}", args.api_address);
+    let listener = TcpListener::bind(&args.api_address).await.unwrap();
     axum::serve(listener, app).await.unwrap();
 }

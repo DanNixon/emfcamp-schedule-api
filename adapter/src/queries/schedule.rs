@@ -7,6 +7,7 @@ use axum_extra::extract::Query;
 use chrono::{DateTime, FixedOffset};
 use emfcamp_schedule_api::schedule::mutation;
 use serde::{Deserialize, Serialize};
+use tracing::info;
 
 #[derive(Debug, Deserialize, Serialize)]
 pub(crate) struct ScheduleQueryParams {
@@ -54,6 +55,8 @@ pub(crate) async fn schedule(
     State(state): State<crate::State>,
     Query(query): Query<ScheduleQueryParams>,
 ) -> Response {
+    info!("Query: schedule: {:?}", query);
+
     let mut schedule = state.client.get_schedule().await;
 
     let mutators = query.into();
