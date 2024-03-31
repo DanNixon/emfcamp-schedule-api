@@ -7,6 +7,7 @@ use axum_extra::extract::Query;
 use chrono::{DateTime, FixedOffset, Local};
 use emfcamp_schedule_api::schedule::mutation;
 use serde::{Deserialize, Serialize};
+use tracing::info;
 
 #[derive(Debug, Deserialize, Serialize)]
 pub(crate) struct NowAndNextQueryParams {
@@ -44,6 +45,8 @@ pub(crate) async fn now_and_next(
     State(state): State<crate::State>,
     Query(query): Query<NowAndNextQueryParams>,
 ) -> Response {
+    info!("Query: now and next: {:?}", query);
+
     let mut schedule = state.client.get_schedule().await;
 
     let now = query

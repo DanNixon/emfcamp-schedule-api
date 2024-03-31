@@ -31,6 +31,7 @@
       Entrypoint = ["${pkgs.tini}/bin/tini" "--" "${emfcamp-schedule-api-adapter}/bin/emfcamp-schedule-api-adapter"];
       Env = [
         "SSL_CERT_FILE=${pkgs.cacert}/etc/ssl/certs/ca-bundle.crt"
+        "API_ADDRESS=0.0.0.0:8000"
       ];
     };
   };
