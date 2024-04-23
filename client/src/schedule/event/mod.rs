@@ -3,8 +3,9 @@ mod timestamp;
 
 use chrono::{DateTime, FixedOffset};
 use serde::{Deserialize, Serialize};
+use serde_json::Value;
 use serde_with::{serde_as, NoneAsEmptyString};
-use std::cmp::Ordering;
+use std::{cmp::Ordering, collections::HashMap};
 use url::Url;
 
 pub use self::kind::{Kind, Workshop};
@@ -44,7 +45,9 @@ pub struct Event {
     pub is_family_friendly: Option<bool>,
 
     pub link: Url,
-    // TODO: other fields
+
+    #[serde(flatten)]
+    pub extra: HashMap<String, Value>,
 }
 
 impl Event {
@@ -69,6 +72,7 @@ impl Event {
             may_record: None,
             is_family_friendly: None,
             link: Url::parse("http://example.com").unwrap(),
+            extra: Default::default(),
         }
     }
 
