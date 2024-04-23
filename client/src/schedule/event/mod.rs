@@ -3,11 +3,13 @@ mod timestamp;
 
 use chrono::{DateTime, FixedOffset};
 use serde::{Deserialize, Serialize};
+use serde_with::{serde_as, NoneAsEmptyString};
 use std::cmp::Ordering;
 use url::Url;
 
 pub use self::kind::{Kind, Workshop};
 
+#[serde_as]
 #[derive(Debug, Clone, PartialEq, Eq, Deserialize, Serialize)]
 pub struct Event {
     pub id: u32,
@@ -22,12 +24,14 @@ pub struct Event {
 
     pub venue: String,
 
+    #[serde_as(as = "NoneAsEmptyString")]
     pub map_link: Option<String>,
 
     pub title: String,
 
     pub speaker: String,
 
+    #[serde_as(as = "NoneAsEmptyString")]
     pub pronouns: Option<String>,
 
     pub description: String,
