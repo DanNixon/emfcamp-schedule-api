@@ -8,4 +8,5 @@ edition.workspace = true
 chrono.workspace = true
 reqwest.workspace = true
 serde.workspace = true
+serde_with.workspace = true
 url.workspace = true
