@@ -1,0 +1,24 @@
+[advisories]
+db-path = "~/.cargo/advisory-db"
+db-urls = [ "https://github.com/rustsec/advisory-db" ]
+vulnerability = "deny"
+unmaintained = "deny"
+yanked = "deny"
+notice = "warn"
+
+[licenses]
+default = "deny"
+unlicensed = "deny"
+copyleft = "allow"
+allow-osi-fsf-free = "osi"
+allow = [
+  "OpenSSL",
+]
+
+[[licenses.clarify]]
+name = "ring"
+expression = "MIT AND ISC AND OpenSSL"
+license-files = [ { path = "LICENSE", hash = 0xbd0eed23 } ]
+
+[bans]
+multiple-versions = "allow"
