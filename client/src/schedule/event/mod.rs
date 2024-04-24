@@ -25,14 +25,14 @@ pub struct Event {
 
     pub venue: String,
 
-    #[serde_as(as = "NoneAsEmptyString")]
+    #[serde_as(deserialize_as = "NoneAsEmptyString")]
     pub map_link: Option<String>,
 
     pub title: String,
 
     pub speaker: String,
 
-    #[serde_as(as = "NoneAsEmptyString")]
+    #[serde_as(deserialize_as = "NoneAsEmptyString")]
     pub pronouns: Option<String>,
 
     pub description: String,
