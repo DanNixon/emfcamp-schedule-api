@@ -8,6 +8,7 @@ edition.workspace = true
 ascii_table.workspace = true
 chrono.workspace = true
 clap.workspace = true
+clap_complete.workspace = true
 emfcamp-schedule-api.workspace = true
 termcolor.workspace = true
 tokio.workspace = true

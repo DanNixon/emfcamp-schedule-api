@@ -1,7 +1,8 @@
 mod commands;
 mod formatting;
 
-use clap::{Parser, Subcommand};
+use clap::{CommandFactory, Parser, Subcommand};
+use clap_complete::Shell;
 use url::Url;
 
 #[derive(Debug, Parser)]
@@ -25,7 +26,7 @@ enum Command {
     /// Show the complete schedule
     Full(commands::full::FullOptions),
 
-    /// Show the complete scheule minus events from the past
+    /// Show the complete schedule minus events from the past
     Upcoming(commands::upcoming::UpcomingOptions),
 
     /// Show the EPG style now and next for venue(s)
@@ -36,6 +37,12 @@ enum Command {
 
     /// List all venues
     Venues,
+
+    /// Generate shell completions
+    ShellCompletions {
+        /// The shell to generate completions for
+        shell: Shell,
+    },
 }
 
 #[tokio::main]
@@ -52,5 +59,12 @@ async fn main() {
         Command::NowNext(args) => commands::now_next::run(args, schedule),
         Command::Details(args) => commands::details::run(args, schedule),
         Command::Venues => commands::venues::run(schedule),
+        Command::ShellCompletions { shell } => print_shell_completions(shell),
     }
+}
+
+fn print_shell_completions(shell: Shell) {
+    let mut cmd = Cli::command();
+    let name = cmd.get_name().to_string();
+    clap_complete::generate(shell, &mut cmd, name, &mut std::io::stdout());
 }
