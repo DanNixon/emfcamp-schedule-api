@@ -22,7 +22,9 @@ impl Schedule {
     }
 
     pub fn venues(&self) -> Vec<String> {
-        get_unique_venues_from_events(&self.events)
+        let mut venues = get_unique_venues_from_events(&self.events);
+        venues.sort();
+        venues
     }
 
     pub fn now_and_next(&self, now: DateTime<FixedOffset>) -> now_and_next::NowAndNext {

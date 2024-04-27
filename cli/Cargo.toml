@@ -5,6 +5,10 @@ version.workspace = true
 edition.workspace = true
 
 [dependencies]
+ascii_table.workspace = true
+chrono.workspace = true
+clap.workspace = true
 emfcamp-schedule-api.workspace = true
+termcolor.workspace = true
 tokio.workspace = true
 url.workspace = true
