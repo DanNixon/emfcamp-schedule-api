@@ -13,8 +13,6 @@ impl FakeStartEpoch {
 
 impl Mutator for FakeStartEpoch {
     fn mutate(&self, events: &mut Vec<Event>) {
-        events.sort();
-
         if let Some(first_event) = events.first() {
             let first_event_start_time = first_event.start;
 

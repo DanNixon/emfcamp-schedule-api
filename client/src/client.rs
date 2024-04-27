@@ -12,14 +12,12 @@ impl Client {
     }
 
     pub async fn get_schedule(&self) -> Schedule {
-        let mut events = reqwest::get(self.url.clone())
+        let events = reqwest::get(self.url.clone())
             .await
             .unwrap()
             .json::<Vec<Event>>()
             .await
             .unwrap();
-
-        events.sort();
 
         Schedule { events }
     }
