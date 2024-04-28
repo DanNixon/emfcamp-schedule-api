@@ -7,6 +7,8 @@ use metrics_exporter_prometheus::{BuildError, PrometheusBuilder};
 pub(crate) static REQUESTS: &str = "emf_schedule_adapter_requests";
 pub(crate) static ENDPOINT_LABEL: &str = "endpoint";
 
+pub(crate) static UPSTREAM_API_FAILURES: &str = "emf_schedule_adapter_upstream_api_failures";
+
 pub(super) fn init(address: SocketAddr) -> Result<(), BuildError> {
     info!("Starting observability server on {address}");
 
@@ -15,6 +17,11 @@ pub(super) fn init(address: SocketAddr) -> Result<(), BuildError> {
         .install();
 
     describe_counter!(REQUESTS, "Number of requests made to each API endpoint");
+
+    describe_counter!(
+        UPSTREAM_API_FAILURES,
+        "Number of requests to the upstream schedule API that have failed"
+    );
 
     result
 }
