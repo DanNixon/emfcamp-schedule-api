@@ -6,6 +6,7 @@ use axum::{
 use axum_extra::extract::Query;
 use chrono::{DateTime, FixedOffset};
 use emfcamp_schedule_api::schedule::mutation;
+use metrics::counter;
 use serde::{Deserialize, Serialize};
 use tracing::info;
 
@@ -56,6 +57,7 @@ pub(crate) async fn schedule(
     Query(query): Query<ScheduleQueryParams>,
 ) -> Response {
     info!("Query: schedule: {:?}", query);
+    counter!(crate::metrics::REQUESTS, crate::metrics::ENDPOINT_LABEL => "schedule").increment(1);
 
     let mut schedule = state.client.get_schedule().await;
 

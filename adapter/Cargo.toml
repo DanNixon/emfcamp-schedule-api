@@ -5,11 +5,14 @@ version.workspace = true
 edition.workspace = true
 
 [dependencies]
+anyhow.workspace = true
 axum.workspace = true
 axum-extra.workspace = true
 chrono.workspace = true
 clap.workspace = true
 emfcamp-schedule-api.workspace = true
+metrics.workspace = true
+metrics-exporter-prometheus.workspace = true
 serde.workspace = true
 tokio.workspace = true
 tracing.workspace = true
