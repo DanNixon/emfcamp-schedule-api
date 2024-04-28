@@ -456,6 +456,7 @@ dependencies = [
 name = "emfcamp-schedule-cli"
 version = "0.0.1"
 dependencies = [
+ "anyhow",
  "ascii_table",
  "chrono",
  "clap",

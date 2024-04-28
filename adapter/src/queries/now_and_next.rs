@@ -1,5 +1,6 @@
 use axum::{
     extract::State,
+    http::StatusCode,
     response::{IntoResponse, Response},
     Json,
 };
@@ -8,7 +9,7 @@ use chrono::{DateTime, FixedOffset, Local};
 use emfcamp_schedule_api::schedule::mutation;
 use metrics::counter;
 use serde::{Deserialize, Serialize};
-use tracing::info;
+use tracing::{error, info};
 
 #[derive(Debug, Deserialize, Serialize)]
 pub(crate) struct NowAndNextQueryParams {
@@ -50,14 +51,20 @@ pub(crate) async fn now_and_next(
     counter!(crate::metrics::REQUESTS, crate::metrics::ENDPOINT_LABEL => "now_and_next")
         .increment(1);
 
-    let mut schedule = state.client.get_schedule().await;
+    match state.client.get_schedule().await {
+        Ok(mut schedule) => {
+            let now = query.now.unwrap_or_else(|| Local::now().into());
 
-    let now = query.now.unwrap_or_else(|| Local::now().into());
+            let mutators = query.into();
+            schedule.mutate(&mutators);
 
-    let mutators = query.into();
-    schedule.mutate(&mutators);
-
-    let epg = schedule.now_and_next(now);
-
-    Json(epg).into_response()
+            let epg = schedule.now_and_next(now);
+            Json(epg).into_response()
+        }
+        Err(err) => {
+            error!("{err}");
+            counter!(crate::metrics::UPSTREAM_API_FAILURES).increment(1);
+            (StatusCode::INTERNAL_SERVER_ERROR).into_response()
+        }
+    }
 }

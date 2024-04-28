@@ -1,6 +1,7 @@
 mod commands;
 mod formatting;
 
+use anyhow::Result;
 use clap::{CommandFactory, Parser, Subcommand};
 use clap_complete::Shell;
 use url::Url;
@@ -46,12 +47,12 @@ enum Command {
 }
 
 #[tokio::main]
-async fn main() {
+async fn main() -> Result<()> {
     let args = Cli::parse();
 
     let client = emfcamp_schedule_api::Client::new(args.api_url);
 
-    let schedule = client.get_schedule().await;
+    let schedule = client.get_schedule().await?;
 
     match args.command {
         Command::Full(args) => commands::full::run(args, schedule),
@@ -61,6 +62,8 @@ async fn main() {
         Command::Venues => commands::venues::run(schedule),
         Command::ShellCompletions { shell } => print_shell_completions(shell),
     }
+
+    Ok(())
 }
 
 fn print_shell_completions(shell: Shell) {

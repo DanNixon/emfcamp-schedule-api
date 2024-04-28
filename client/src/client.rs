@@ -1,4 +1,5 @@
 use crate::schedule::{event::Event, Schedule};
+use reqwest::Error;
 use url::Url;
 
 #[derive(Debug, Clone)]
@@ -11,14 +12,12 @@ impl Client {
         Self { url }
     }
 
-    pub async fn get_schedule(&self) -> Schedule {
+    pub async fn get_schedule(&self) -> Result<Schedule, Error> {
         let events = reqwest::get(self.url.clone())
-            .await
-            .unwrap()
+            .await?
             .json::<Vec<Event>>()
-            .await
-            .unwrap();
+            .await?;
 
-        Schedule { events }
+        Ok(Schedule { events })
     }
 }
