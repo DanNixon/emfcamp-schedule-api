@@ -24,9 +24,9 @@ emfcamp-schedule-api = { path = "./client/" }
 metrics = "0.22.3"
 metrics-exporter-prometheus = { version = "0.14.0", default-features = false, features = ["http-listener"] }
 reqwest = { version = "0.11.27", default-features = false, features = ["json", "rustls-tls"] }
-serde = { version = "1.0.198", features = ["derive"] }
+serde = { version = "1.0.199", features = ["derive"] }
 serde_json = "1.0.116"
-serde_with = "3.7.0"
+serde_with = "3.8.1"
 termcolor = "1.4.1"
 tokio = { version = "1.37.0", features = ["rt-multi-thread", "macros"] }
 tracing = "0.1.40"
