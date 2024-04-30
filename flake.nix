@@ -24,8 +24,6 @@
 
         version = cargoToml.workspace.package.version;
         gitRevision = self.shortRev or self.dirtyShortRev;
-
-        lintingRustFlags = "-D unused-crate-dependencies";
       in rec {
         devShell = pkgs.mkShell {
           packages = with pkgs; [
@@ -49,8 +47,6 @@
             # Container image management tool
             skopeo
           ];
-
-          RUSTFLAGS = lintingRustFlags;
         };
 
         packages =
