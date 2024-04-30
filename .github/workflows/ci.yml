@@ -35,6 +35,9 @@ jobs:
       - name: Tests
         run: nix develop --command cargo test
 
+      - name: Build examples
+        run: nix develop --command cargo build --examples
+
   build:
     name: Build
     needs:

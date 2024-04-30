@@ -425,11 +425,13 @@ dependencies = [
 name = "emfcamp-schedule-api"
 version = "0.0.1"
 dependencies = [
+ "anyhow",
  "chrono",
  "reqwest",
  "serde",
  "serde_json",
  "serde_with",
+ "tokio",
  "url",
 ]
 
