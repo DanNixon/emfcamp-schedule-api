@@ -52,13 +52,13 @@ pub struct Event {
 
 impl Event {
     #[cfg(test)]
-    pub fn dummy(start: DateTime<FixedOffset>) -> Self {
+    pub fn dummy(id: u32, start: DateTime<FixedOffset>) -> Self {
         use chrono::Duration;
 
         let duration = Duration::try_hours(1).unwrap();
 
         Self {
-            id: 0,
+            id,
             slug: "".to_owned(),
             start,
             end: start + duration,
@@ -72,7 +72,7 @@ impl Event {
             may_record: None,
             is_family_friendly: None,
             link: Url::parse("http://example.com").unwrap(),
-            extra: Default::default(),
+            extra: HashMap::default(),
         }
     }
 
@@ -119,39 +119,49 @@ mod test {
 
     #[test]
     fn relative_time_past() {
-        let event =
-            Event::dummy(DateTime::parse_from_rfc3339("2024-03-12T20:00:00+00:00").unwrap());
+        let event = Event::dummy(
+            0,
+            DateTime::parse_from_rfc3339("2024-03-12T20:00:00+00:00").unwrap(),
+        );
         let t = event.end + Duration::try_seconds(1).unwrap();
         assert_eq!(event.relative_to(t), RelativeTime::Past);
     }
 
     #[test]
     fn relative_time_future() {
-        let event =
-            Event::dummy(DateTime::parse_from_rfc3339("2024-03-12T20:00:00+00:00").unwrap());
+        let event = Event::dummy(
+            0,
+            DateTime::parse_from_rfc3339("2024-03-12T20:00:00+00:00").unwrap(),
+        );
         let t = event.start - Duration::try_seconds(1).unwrap();
         assert_eq!(event.relative_to(t), RelativeTime::Future);
     }
 
     #[test]
     fn relative_time_now_1() {
-        let event =
-            Event::dummy(DateTime::parse_from_rfc3339("2024-03-12T20:00:00+00:00").unwrap());
+        let event = Event::dummy(
+            0,
+            DateTime::parse_from_rfc3339("2024-03-12T20:00:00+00:00").unwrap(),
+        );
         assert_eq!(event.relative_to(event.start), RelativeTime::Now);
     }
 
     #[test]
     fn relative_time_now_2() {
-        let event =
-            Event::dummy(DateTime::parse_from_rfc3339("2024-03-12T20:00:00+00:00").unwrap());
+        let event = Event::dummy(
+            0,
+            DateTime::parse_from_rfc3339("2024-03-12T20:00:00+00:00").unwrap(),
+        );
         assert_eq!(event.relative_to(event.end), RelativeTime::Now);
     }
 
     #[test]
     #[should_panic]
     fn relative_time_now_panic() {
-        let mut event =
-            Event::dummy(DateTime::parse_from_rfc3339("2024-03-12T20:00:00+00:00").unwrap());
+        let mut event = Event::dummy(
+            0,
+            DateTime::parse_from_rfc3339("2024-03-12T20:00:00+00:00").unwrap(),
+        );
         event.end = event.start - Duration::try_minutes(5).unwrap();
         assert_eq!(event.relative_to(event.start), RelativeTime::Now);
     }

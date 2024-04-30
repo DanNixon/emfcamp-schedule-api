@@ -6,7 +6,7 @@ use self::mutation::Mutators;
 use chrono::{DateTime, FixedOffset};
 use std::collections::HashSet;
 
-#[derive(Debug)]
+#[derive(Debug, PartialEq, Eq)]
 pub struct Schedule {
     pub events: Vec<event::Event>,
 }

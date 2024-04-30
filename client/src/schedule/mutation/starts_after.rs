@@ -25,9 +25,18 @@ mod test {
     #[test]
     fn basic() {
         let events = vec![
-            Event::dummy(DateTime::parse_from_rfc3339("2024-03-12T20:00:00+00:00").unwrap()),
-            Event::dummy(DateTime::parse_from_rfc3339("2024-03-12T21:00:00+00:00").unwrap()),
-            Event::dummy(DateTime::parse_from_rfc3339("2024-03-12T22:00:00+00:00").unwrap()),
+            Event::dummy(
+                0,
+                DateTime::parse_from_rfc3339("2024-03-12T20:00:00+00:00").unwrap(),
+            ),
+            Event::dummy(
+                1,
+                DateTime::parse_from_rfc3339("2024-03-12T21:00:00+00:00").unwrap(),
+            ),
+            Event::dummy(
+                2,
+                DateTime::parse_from_rfc3339("2024-03-12T22:00:00+00:00").unwrap(),
+            ),
         ];
 
         let mutator =

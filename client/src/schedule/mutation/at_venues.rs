@@ -26,6 +26,7 @@ mod test {
         let events = vec![
             {
                 let mut e = Event::dummy(
+                    0,
                     DateTime::parse_from_rfc3339("2024-03-12T20:00:00+00:00").unwrap(),
                 );
                 e.venue = "venue 1".to_owned();
@@ -33,6 +34,7 @@ mod test {
             },
             {
                 let mut e = Event::dummy(
+                    1,
                     DateTime::parse_from_rfc3339("2024-03-12T20:00:00+00:00").unwrap(),
                 );
                 e.venue = "venue 2".to_owned();
@@ -40,6 +42,7 @@ mod test {
             },
             {
                 let mut e = Event::dummy(
+                    2,
                     DateTime::parse_from_rfc3339("2024-03-12T21:00:00+00:00").unwrap(),
                 );
                 e.venue = "venue 1".to_owned();
