@@ -59,8 +59,8 @@ pub(crate) fn run(args: NowNextOptions, mut schedule: Schedule) {
     table.print(table_data);
 }
 
-fn format_event_now(event: &Option<Event>) -> String {
-    match event {
+fn format_event_now(events: &[Event]) -> String {
+    match events.first() {
         Some(event) => format!(
             ">{} [{}] {}",
             event.end.format("%H:%M"),
@@ -71,8 +71,8 @@ fn format_event_now(event: &Option<Event>) -> String {
     }
 }
 
-fn format_event_next(event: &Option<Event>) -> String {
-    match event {
+fn format_event_next(events: &[Event]) -> String {
+    match events.first() {
         Some(event) => format!(
             "@{} [{}] {}",
             event.start.format("%H:%M"),

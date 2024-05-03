@@ -20,14 +20,20 @@ impl NowAndNext {
             result.guide.insert(
                 venue.clone(),
                 VenueNowAndNext {
-                    now: events
+                    now: match events
                         .iter()
                         .find(|e| e.venue == venue && e.relative_to(now) == RelativeTime::Now)
-                        .cloned(),
-                    next: events
+                    {
+                        Some(e) => vec![e.clone()],
+                        None => Vec::default(),
+                    },
+                    next: match events
                         .iter()
                         .find(|e| e.venue == venue && e.relative_to(now) == RelativeTime::Future)
-                        .cloned(),
+                    {
+                        Some(e) => vec![e.clone()],
+                        None => Vec::default(),
+                    },
                 },
             );
         }
@@ -39,11 +45,11 @@ impl NowAndNext {
 #[derive(Debug, Deserialize, Serialize)]
 pub struct VenueNowAndNext {
     /// An event is "now" if the query time is between its start and end timestamps.
-    pub now: Option<Event>,
+    pub now: Vec<Event>,
 
     /// An event is "next" if is the first event in chronological order to have a start timestamp
     /// that is later than the query timestamp.
-    pub next: Option<Event>,
+    pub next: Vec<Event>,
 }
 
 #[cfg(test)]
@@ -84,11 +90,11 @@ mod test {
 
         assert_eq!(now_and_next.guide.len(), 2);
 
-        assert_eq!(now_and_next.guide["venue 1"].now, Some(events[0].clone()));
-        assert_eq!(now_and_next.guide["venue 1"].next, Some(events[2].clone()));
+        assert_eq!(now_and_next.guide["venue 1"].now, vec![events[0].clone()]);
+        assert_eq!(now_and_next.guide["venue 1"].next, vec![events[2].clone()]);
 
-        assert_eq!(now_and_next.guide["venue 2"].now, Some(events[1].clone()));
-        assert_eq!(now_and_next.guide["venue 2"].next, None);
+        assert_eq!(now_and_next.guide["venue 2"].now, vec![events[1].clone()]);
+        assert_eq!(now_and_next.guide["venue 2"].next, Vec::default());
     }
 
     #[test]
@@ -124,10 +130,10 @@ mod test {
 
         assert_eq!(now_and_next.guide.len(), 2);
 
-        assert_eq!(now_and_next.guide["venue 1"].now, None);
-        assert_eq!(now_and_next.guide["venue 1"].next, Some(events[0].clone()));
+        assert_eq!(now_and_next.guide["venue 1"].now, Vec::default());
+        assert_eq!(now_and_next.guide["venue 1"].next, vec![events[0].clone()]);
 
-        assert_eq!(now_and_next.guide["venue 2"].now, None);
-        assert_eq!(now_and_next.guide["venue 2"].next, Some(events[1].clone()));
+        assert_eq!(now_and_next.guide["venue 2"].now, Vec::default());
+        assert_eq!(now_and_next.guide["venue 2"].next, vec![events[1].clone()]);
     }
 }
