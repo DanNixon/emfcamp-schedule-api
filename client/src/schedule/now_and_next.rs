@@ -17,23 +17,30 @@ impl NowAndNext {
         };
 
         for venue in super::get_unique_venues_from_events(events) {
+            let events_now = events
+                .iter()
+                .filter_map(|e| {
+                    if e.venue == venue && e.relative_to(now) == RelativeTime::Now {
+                        Some(e.clone())
+                    } else {
+                        None
+                    }
+                })
+                .collect();
+
+            let events_next = match events
+                .iter()
+                .find(|e| e.venue == venue && e.relative_to(now) == RelativeTime::Future)
+            {
+                Some(e) => vec![e.clone()],
+                None => Vec::default(),
+            };
+
             result.guide.insert(
                 venue.clone(),
                 VenueNowAndNext {
-                    now: match events
-                        .iter()
-                        .find(|e| e.venue == venue && e.relative_to(now) == RelativeTime::Now)
-                    {
-                        Some(e) => vec![e.clone()],
-                        None => Vec::default(),
-                    },
-                    next: match events
-                        .iter()
-                        .find(|e| e.venue == venue && e.relative_to(now) == RelativeTime::Future)
-                    {
-                        Some(e) => vec![e.clone()],
-                        None => Vec::default(),
-                    },
+                    now: events_now,
+                    next: events_next,
                 },
             );
         }
@@ -135,5 +142,52 @@ mod test {
 
         assert_eq!(now_and_next.guide["venue 2"].now, Vec::default());
         assert_eq!(now_and_next.guide["venue 2"].next, vec![events[1].clone()]);
+    }
+
+    #[test]
+    fn concurrent_now() {
+        let events = vec![
+            {
+                let mut e = Event::dummy(
+                    DateTime::parse_from_rfc3339("2024-03-12T20:00:00+00:00").unwrap(),
+                );
+                e.venue = "venue 1".to_owned();
+                e
+            },
+            {
+                let mut e = Event::dummy(
+                    DateTime::parse_from_rfc3339("2024-03-12T20:00:00+00:00").unwrap(),
+                );
+                e.venue = "venue 2".to_owned();
+                e
+            },
+            {
+                let mut e = Event::dummy(
+                    DateTime::parse_from_rfc3339("2024-03-12T20:00:00+00:00").unwrap(),
+                );
+                e.venue = "venue 1".to_owned();
+                e
+            },
+            {
+                let mut e = Event::dummy(
+                    DateTime::parse_from_rfc3339("2024-03-12T21:00:00+00:00").unwrap(),
+                );
+                e.venue = "venue 1".to_owned();
+                e
+            },
+        ];
+
+        let t = DateTime::parse_from_rfc3339("2024-03-12T20:30:00+00:00").unwrap();
+        let now_and_next = NowAndNext::new(&events, t);
+
+        assert_eq!(now_and_next.now, t);
+
+        assert_eq!(now_and_next.guide.len(), 2);
+
+        assert_eq!(
+            now_and_next.guide["venue 1"].now,
+            vec![events[0].clone(), events[2].clone()]
+        );
+        assert_eq!(now_and_next.guide["venue 1"].next, vec![events[3].clone()]);
     }
 }
