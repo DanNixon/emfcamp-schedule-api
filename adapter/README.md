@@ -10,6 +10,10 @@ It adds a few nice features on top of the official API:
 - A now and next API that is not dependant on being part way through the event to develop for
 - Listing venues
 
+The format of the data returned by the adapter is effectively identical to what the official EMF API is (with the expection of correctly formatted timestamps).
+
+Note that if you make use of `fake_epoch` that this only changes the start and end timestamps (`start_date` and `end_date`) it does not affect the times (`start_time` and `end_time`, why these fields are there when the former fields are actually a timestamp I have no bloody idea).
+
 ## Examples
 
 It is likely useful to stuff the output of these into your JSON visualiser of choice (e.g. pipe to `| jq | less`).
