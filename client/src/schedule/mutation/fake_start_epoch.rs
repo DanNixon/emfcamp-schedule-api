@@ -1,6 +1,10 @@
 use super::{Event, Mutator};
 use chrono::{DateTime, FixedOffset};
 
+/// Offsets event timestamps based on the difference between the start time of the first event and a given time.
+/// Effectively making EMF start at a time of your choosing.
+/// Useful for development only.
+/// Note that the events must be sorted by start timestamp before using this mutator.
 pub struct FakeStartEpoch {
     epoch: DateTime<FixedOffset>,
 }
