@@ -28,7 +28,7 @@ pub(crate) struct NowAndNextQueryParams {
 
 impl From<NowAndNextQueryParams> for mutation::Mutators {
     fn from(params: NowAndNextQueryParams) -> Self {
-        let mut mutators = Self::default();
+        let mut mutators = Self::new_single(Box::<mutation::SortedByStartTime>::default());
 
         if let Some(epoch) = params.fake_epoch {
             mutators.push(Box::new(mutation::FakeStartEpoch::new(epoch)));
