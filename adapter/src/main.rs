@@ -18,7 +18,7 @@ struct Cli {
     #[clap(
         long,
         env,
-        default_value = "https://www.emfcamp.org/schedule/2022.json"
+        default_value = "https://www.emfcamp.org/schedule/2024.json"
     )]
     upstream_api_url: Url,
 

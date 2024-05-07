@@ -14,7 +14,7 @@ struct Cli {
         long,
         env,
         value_name = "URL",
-        default_value = "https://www.emfcamp.org/schedule/2022.json"
+        default_value = "https://www.emfcamp.org/schedule/2024.json"
     )]
     api_url: Url,
 
