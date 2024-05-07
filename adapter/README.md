@@ -16,6 +16,8 @@ Note that if you make use of `fake_epoch` that this only changes the start and e
 
 ## Examples
 
+Note that these examples are valid for the 2022 schedule.
+
 It is likely useful to stuff the output of these into your JSON visualiser of choice (e.g. pipe to `| jq | less`).
 
 - List the entire schedule: `curl "localhost:8000/schedule"`
