@@ -113,7 +113,7 @@ impl Announcer {
             // Determine what the next event to announce is and in how much time it is due to be announced
             let next_event = self.get_next_event_to_announce();
             let event_wait_time = match next_event {
-                Some(ref event) => self::utils::get_duration_before_event(
+                Some(ref event) => self::utils::get_duration_before_event_notification(
                     Utc::now().into(),
                     self.settings.event_start_offset,
                     event,
