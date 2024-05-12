@@ -78,7 +78,8 @@ macro_rules! assert_future_in {
 
         let finish = tokio::time::Instant::now();
 
-        let tolerance = Duration::from_millis(500);
+        let tolerance = Duration::from_millis(100);
+
         let late = finish.checked_duration_since($expected_at);
         let early = $expected_at.checked_duration_since(finish);
 
