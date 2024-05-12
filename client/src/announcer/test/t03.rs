@@ -5,10 +5,14 @@ async fn t03_changes_to_the_schedule_are_noticed() {
     let mut dummy_server = DummyScheduleServer::new(8003).await;
 
     let now = Utc::now();
-    dummy_server.set_events(vec![Event::dummy(
-        0,
-        (now + ChronoDuration::try_minutes(1).unwrap()).into(),
-    )]);
+
+    set_and_patch_dummy_events(
+        &mut dummy_server,
+        vec![Event::dummy(
+            0,
+            (now + ChronoDuration::try_minutes(1).unwrap()).into(),
+        )],
+    );
 
     let client = Client::new(dummy_server.url());
 
@@ -23,10 +27,13 @@ async fn t03_changes_to_the_schedule_are_noticed() {
     .await
     .unwrap();
 
-    dummy_server.set_events(vec![Event::dummy(
-        1,
-        (now + ChronoDuration::try_minutes(1).unwrap()).into(),
-    )]);
+    set_and_patch_dummy_events(
+        &mut dummy_server,
+        vec![Event::dummy(
+            1,
+            (now + ChronoDuration::try_minutes(1).unwrap()).into(),
+        )],
+    );
 
     crate::assert_future_in!(
         announcer.poll(),

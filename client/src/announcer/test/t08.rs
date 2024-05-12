@@ -5,15 +5,15 @@ async fn t08_future_changes_take_effect() {
     let mut dummy_server = DummyScheduleServer::new(8008).await;
 
     let now = Utc::now();
-    let mut events = vec![
-        Event::dummy(0, (now + ChronoDuration::try_seconds(1).unwrap()).into()),
-        Event::dummy(1, (now + ChronoDuration::try_seconds(3).unwrap()).into()),
-        Event::dummy(2, (now + ChronoDuration::try_seconds(7).unwrap()).into()),
-    ];
 
-    dummy_server.set_events(events.clone());
-
-    fixup_events_for_test_comparison(&mut events);
+    let events = set_and_patch_dummy_events(
+        &mut dummy_server,
+        vec![
+            Event::dummy(0, (now + ChronoDuration::try_seconds(1).unwrap()).into()),
+            Event::dummy(1, (now + ChronoDuration::try_seconds(3).unwrap()).into()),
+            Event::dummy(2, (now + ChronoDuration::try_seconds(7).unwrap()).into()),
+        ],
+    );
 
     let client = Client::new(dummy_server.url());
 
@@ -53,15 +53,14 @@ async fn t08_future_changes_take_effect() {
         AnnouncerPollResult::ScheduleRefreshed(AnnouncerScheduleChanges::NoChanges)
     );
 
-    let mut events = vec![
-        Event::dummy(0, (now + ChronoDuration::try_seconds(1).unwrap()).into()),
-        Event::dummy(1, (now + ChronoDuration::try_seconds(3).unwrap()).into()),
-        Event::dummy(2, (now + ChronoDuration::try_seconds(9).unwrap()).into()),
-    ];
-
-    dummy_server.set_events(events.clone());
-
-    fixup_events_for_test_comparison(&mut events);
+    let events = set_and_patch_dummy_events(
+        &mut dummy_server,
+        vec![
+            Event::dummy(0, (now + ChronoDuration::try_seconds(1).unwrap()).into()),
+            Event::dummy(1, (now + ChronoDuration::try_seconds(3).unwrap()).into()),
+            Event::dummy(2, (now + ChronoDuration::try_seconds(9).unwrap()).into()),
+        ],
+    );
 
     crate::assert_future_in!(
         announcer.poll(),

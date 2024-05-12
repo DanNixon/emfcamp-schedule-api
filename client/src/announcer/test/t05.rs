@@ -5,16 +5,16 @@ async fn t05_event_notification_with_multiple_identical_start_times() {
     let mut dummy_server = DummyScheduleServer::new(8005).await;
 
     let now = Utc::now();
-    let mut events = vec![
-        Event::dummy(0, (now + ChronoDuration::try_seconds(1).unwrap()).into()),
-        Event::dummy(1, (now + ChronoDuration::try_seconds(2).unwrap()).into()),
-        Event::dummy(2, (now + ChronoDuration::try_seconds(2).unwrap()).into()),
-        Event::dummy(3, (now + ChronoDuration::try_seconds(3).unwrap()).into()),
-    ];
 
-    dummy_server.set_events(events.clone());
-
-    fixup_events_for_test_comparison(&mut events);
+    let events = set_and_patch_dummy_events(
+        &mut dummy_server,
+        vec![
+            Event::dummy(0, (now + ChronoDuration::try_seconds(1).unwrap()).into()),
+            Event::dummy(1, (now + ChronoDuration::try_seconds(2).unwrap()).into()),
+            Event::dummy(2, (now + ChronoDuration::try_seconds(2).unwrap()).into()),
+            Event::dummy(3, (now + ChronoDuration::try_seconds(3).unwrap()).into()),
+        ],
+    );
 
     let client = Client::new(dummy_server.url());
 
