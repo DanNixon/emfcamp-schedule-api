@@ -7,16 +7,13 @@ use crate::{
     Client,
 };
 use chrono::{DateTime, Duration as ChronoDuration, FixedOffset};
-use tokio::time::{Duration as TokioDuration, Instant};
+use tokio::time::Duration as TokioDuration;
 use tracing::warn;
 
-pub(super) async fn get_sorted_schedule(client: &Client) -> crate::Result<(Schedule, Instant)> {
+pub(super) async fn get_sorted_schedule(client: &Client) -> crate::Result<Schedule> {
     let mut schedule = client.get_schedule().await?;
     schedule.mutate(&Mutators::new_single(Box::new(SortedByStartTime {})));
-
-    let now = Instant::now();
-
-    Ok((schedule, now))
+    Ok(schedule)
 }
 
 pub(super) fn get_duration_before_event_notification(
