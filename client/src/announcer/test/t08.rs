@@ -1,7 +1,7 @@
 use super::*;
 
 #[tokio::test]
-async fn t08_future_changes_take_effect() {
+async fn t08_changes_in_future_take_effect() {
     let mut dummy_server = DummyScheduleServer::new(8008).await;
 
     let now = Utc::now();
