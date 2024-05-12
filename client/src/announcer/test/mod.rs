@@ -6,6 +6,8 @@ mod t06;
 mod t07;
 mod t08;
 mod t09;
+mod t10;
+mod t11;
 
 use super::*;
 use crate::testing::DummyScheduleServer;
