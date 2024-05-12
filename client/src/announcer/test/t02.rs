@@ -5,10 +5,14 @@ async fn t02_schedule_is_refreshed_on_requested_schedule() {
     let mut dummy_server = DummyScheduleServer::new(8002).await;
 
     let now = Utc::now();
-    dummy_server.set_events(vec![Event::dummy(
-        0,
-        (now + ChronoDuration::try_minutes(1).unwrap()).into(),
-    )]);
+
+    set_and_patch_dummy_events(
+        &mut dummy_server,
+        vec![Event::dummy(
+            0,
+            (now + ChronoDuration::try_minutes(1).unwrap()).into(),
+        )],
+    );
 
     let client = Client::new(dummy_server.url());
 
