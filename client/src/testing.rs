@@ -52,6 +52,10 @@ impl DummyScheduleServer {
         *self.events.lock().unwrap() = events;
     }
 
+    pub(crate) fn event(&self, idx: usize) -> Event {
+        self.events.lock().unwrap()[idx].clone()
+    }
+
     pub(crate) async fn stop(&mut self) {
         if let Some(handle) = self.handle.take() {
             handle.abort();
