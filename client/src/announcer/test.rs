@@ -251,11 +251,7 @@ async fn t7_event_notification_with_schedule_update() {
         Event::dummy(2, (now + ChronoDuration::try_seconds(7).unwrap()).into()),
     ];
 
-    dummy_server.set_events(vec![
-        events[0].clone(),
-        events[1].clone(),
-        events[2].clone(),
-    ]);
+    dummy_server.set_events(events.clone());
 
     fixup_events_for_test_comparison(&mut events);
 
