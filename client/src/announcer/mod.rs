@@ -142,38 +142,47 @@ impl Announcer {
     }
 
     fn get_next_event_to_announce(&self) -> Option<Event> {
-        match &self.last_notified_event_marker {
-            Some(marker) => {
-                match self
-                    .schedule
-                    .events
-                    .iter()
-                    .position(|event| marker.matches(event))
-                {
-                    Some(idx) => {
-                        debug!("Matched last notified event marker, picking next in schedule as next to announce");
-                        self.schedule.events.get(idx + 1).cloned()
-                    }
-                    None => {
-                        debug!("Last notified event marker matched no events (something's fucky...), picking next chronological event as next to announce");
-                        self.schedule
-                            .events
-                            .iter()
-                            .find(|event| event.start > marker.start)
-                            .cloned()
-                    }
-                }
-            }
-            None => {
-                debug!(
-                    "No last notified event marker, picking first in schedule as next to announce"
-                );
-                self.schedule.events.first().cloned()
-            }
-        }
+        get_next_event_to_announce(
+            &self.schedule.events,
+            self.settings.event_start_offset,
+            &self.last_notified_event_marker,
+            Utc::now().into(),
+        )
     }
 
     fn update_event_marker(&mut self, event: &Event) {
         self.last_notified_event_marker = Some(event.into());
+    }
+}
+
+fn get_next_event_to_announce(
+    events: &[Event],
+    event_offset: ChronoDuration,
+    last_notified_event_marker: &Option<LastNotifiedEventMarker>,
+    now: DateTime<FixedOffset>,
+) -> Option<Event> {
+    match last_notified_event_marker {
+        Some(marker) => match events.iter().position(|event| marker.matches(event)) {
+            Some(idx) => {
+                debug!("Matched last notified event marker, picking next in schedule as next to announce");
+                events.get(idx + 1).cloned()
+            }
+            None => {
+                debug!("Last notified event marker matched no events (something's fucky...), picking next chronological event from last announced as next to announce");
+                events
+                    .iter()
+                    .find(|event| event.start > marker.start)
+                    .cloned()
+            }
+        },
+        None => {
+            debug!(
+                    "No last notified event marker, picking next in schedule chronologically from now as next to announce"
+                );
+            events
+                .iter()
+                .find(|event| event.start + event_offset >= now)
+                .cloned()
+        }
     }
 }
