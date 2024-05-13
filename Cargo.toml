@@ -25,11 +25,11 @@ emfcamp-schedule-api = { path = "./client/" }
 metrics = "0.22.3"
 metrics-exporter-prometheus = { version = "0.14.0", default-features = false, features = ["http-listener"] }
 reqwest = { version = "0.11.27", default-features = false, features = ["json", "rustls-tls"] }
-serde = { version = "1.0.200", features = ["derive"] }
-serde_json = "1.0.116"
+serde = { version = "1.0.201", features = ["derive"] }
+serde_json = "1.0.117"
 serde_with = "3.8.1"
 termcolor = "1.4.1"
-thiserror = "1.0.59"
+thiserror = "1.0.60"
 tokio = { version = "1.37.0", features = ["rt-multi-thread", "macros"] }
 tracing = "0.1.40"
 tracing-subscriber = "0.3.18"
