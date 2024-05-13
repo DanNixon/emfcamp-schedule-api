@@ -16,7 +16,7 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
-      - uses: DeterminateSystems/nix-installer-action@v10
+      - uses: DeterminateSystems/nix-installer-action@v11
 
       # Evaluate the devshell here so that the time reported for subsequent
       # steps that use it reflect what is actually done there.
@@ -56,7 +56,7 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
-      - uses: DeterminateSystems/nix-installer-action@v10
+      - uses: DeterminateSystems/nix-installer-action@v11
 
       # Evaluate the devshell here so that the time reported for subsequent
       # steps that use it reflect what is actually done there.
