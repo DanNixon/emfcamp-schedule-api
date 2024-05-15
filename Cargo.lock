@@ -460,6 +460,7 @@ dependencies = [
  "axum",
  "chrono",
  "derive_builder",
+ "metrics",
  "reqwest",
  "serde",
  "serde_json",
