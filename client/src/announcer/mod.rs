@@ -127,16 +127,7 @@ impl Announcer {
     pub async fn poll(&mut self) -> crate::Result<AnnouncerPollResult> {
         loop {
             // Determine what the next event to announce is and in how much time it is due to be announced
-            let next_event = self.get_next_event_to_announce();
-            let event_wait_time = match next_event {
-                Some(ref event) => self::utils::get_duration_before_event_notification(
-                    Utc::now().into(),
-                    self.settings.event_start_offset,
-                    event,
-                ),
-                None => TokioDuration::from_secs(60),
-            };
-            info!("Time to wait before next event: {:?}", event_wait_time);
+            let (next_event, event_wait_time) = self.get_next_event_to_announce();
             gauge!(TIME_TO_NEXT_EVENT_METRIC_NAME).set(event_wait_time.as_secs_f64());
 
             // Wait for one of several things to happen...
@@ -165,13 +156,26 @@ impl Announcer {
         }
     }
 
-    fn get_next_event_to_announce(&self) -> Option<Event> {
-        get_next_event_to_announce(
+    fn get_next_event_to_announce(&self) -> (Option<Event>, TokioDuration) {
+        let next = get_next_event_to_announce(
             &self.schedule.events,
             self.settings.event_start_offset,
             &self.last_notified_event_marker,
             Utc::now().into(),
-        )
+        );
+        info!("Selected next event to announce: {:?}", next);
+
+        let event_wait_time = match next {
+            Some(ref event) => self::utils::get_duration_before_event_notification(
+                Utc::now().into(),
+                self.settings.event_start_offset,
+                event,
+            ),
+            None => TokioDuration::from_secs(60),
+        };
+        info!("Time to wait before next event: {:?}", event_wait_time);
+
+        (next, event_wait_time)
     }
 
     fn update_event_marker(&mut self, event: &Event) {
