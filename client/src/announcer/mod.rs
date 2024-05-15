@@ -37,7 +37,6 @@ pub enum AnnouncerScheduleChanges {
 #[derive(Debug, PartialEq, Eq)]
 pub enum AnnouncerPollResult {
     Event(Event),
-    NoMoreEvents,
     ScheduleRefreshed(AnnouncerScheduleChanges),
 }
 
