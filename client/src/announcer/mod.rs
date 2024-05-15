@@ -8,8 +8,12 @@ use crate::{
 };
 use chrono::{DateTime, Duration as ChronoDuration, FixedOffset, Utc};
 use derive_builder::Builder;
+use metrics::{counter, describe_counter};
 use tokio::time::{Duration as TokioDuration, Interval};
 use tracing::{debug, info, warn};
+
+const EVENT_METRIC_NAME: &str = "schedule_announcer_events";
+const SCHEDULE_UPDATE_METRIC_NAME: &str = "schedule_announcer_schedule_updates";
 
 #[derive(Debug, Builder)]
 #[builder(default)]
@@ -72,6 +76,15 @@ pub struct Announcer {
 
 impl Announcer {
     pub async fn new(settings: AnnouncerSettings, client: Client) -> crate::Result<Self> {
+        describe_counter!(
+            EVENT_METRIC_NAME,
+            "Number of event notifications returned by the announcer"
+        );
+        describe_counter!(
+            SCHEDULE_UPDATE_METRIC_NAME,
+            "Number of schedule updates checked for by the announcer"
+        );
+
         let schedule = self::utils::get_sorted_schedule(&client).await?;
 
         let mut schedule_update_interval = tokio::time::interval(settings.schedule_refresh);
@@ -91,9 +104,12 @@ impl Announcer {
 
         let changes = if self.schedule == schedule {
             debug!("No changes in new schedule");
+            counter!(SCHEDULE_UPDATE_METRIC_NAME, "result" => "ok", "changes" => "no").increment(1);
             AnnouncerScheduleChanges::NoChanges
         } else {
             info!("New schedule is different from previously loaded");
+            counter!(SCHEDULE_UPDATE_METRIC_NAME, "result" => "ok", "changes" => "yes")
+                .increment(1);
             AnnouncerScheduleChanges::Changes
         };
 
@@ -125,13 +141,15 @@ impl Announcer {
                             return Ok(AnnouncerPollResult::ScheduleRefreshed(changes))
                         },
                         Err(e) => {
-                            warn!("Failed to update schedule: {e}")
+                            warn!("Failed to update schedule: {e}");
+                            counter!(SCHEDULE_UPDATE_METRIC_NAME, "result" => "error").increment(1);
                         },
                     }
                 }
                 // 2. The next event to be announced needs to be announced
                 _ = tokio::time::sleep(event_wait_time) => {
                     if let Some(event) = next_event {
+                        metrics::counter!(EVENT_METRIC_NAME).increment(1);
                         self.update_event_marker(&event);
                         return Ok(AnnouncerPollResult::Event(event))
                     }
