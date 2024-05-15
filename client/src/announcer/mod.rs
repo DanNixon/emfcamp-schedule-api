@@ -8,12 +8,13 @@ use crate::{
 };
 use chrono::{DateTime, Duration as ChronoDuration, FixedOffset, Utc};
 use derive_builder::Builder;
-use metrics::{counter, describe_counter};
+use metrics::{counter, describe_counter, describe_gauge, gauge};
 use tokio::time::{Duration as TokioDuration, Interval};
 use tracing::{debug, info, warn};
 
 const EVENT_METRIC_NAME: &str = "schedule_announcer_events";
 const SCHEDULE_UPDATE_METRIC_NAME: &str = "schedule_announcer_schedule_updates";
+const TIME_TO_NEXT_EVENT_METRIC_NAME: &str = "schedule_announcer_time_to_next_event";
 
 #[derive(Debug, Builder)]
 #[builder(default)]
@@ -84,6 +85,11 @@ impl Announcer {
             SCHEDULE_UPDATE_METRIC_NAME,
             "Number of schedule updates checked for by the announcer"
         );
+        describe_gauge!(
+            TIME_TO_NEXT_EVENT_METRIC_NAME,
+            metrics::Unit::Seconds,
+            "Time until the next event needs to be announced"
+        );
 
         let schedule = self::utils::get_sorted_schedule(&client).await?;
 
@@ -130,7 +136,8 @@ impl Announcer {
                 ),
                 None => TokioDuration::from_secs(60),
             };
-            debug!("Time to wait before next event: {:?}", event_wait_time);
+            info!("Time to wait before next event: {:?}", event_wait_time);
+            gauge!(TIME_TO_NEXT_EVENT_METRIC_NAME).set(event_wait_time.as_secs_f64());
 
             // Wait for one of several things to happen...
             tokio::select! {
