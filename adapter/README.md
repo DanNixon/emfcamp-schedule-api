@@ -10,9 +10,12 @@ It adds a few nice features on top of the official API:
 - A now and next API that is not dependant on being part way through the event to develop for
 - Listing venues
 
-The format of the data returned by the adapter is effectively identical to what the official EMF API is (with the expection of correctly formatted timestamps).
+The format of the data returned by the adapter is very similar to what the official EMF API is (with the expection of correctly formatted timestamps).
+It does rely on fields being specified in the [`appropriate types`](https://github.com/DanNixon/emfcamp-schedule-api/tree/main/client/src/schedule/event) in [`client`](https://github.com/DanNixon/emfcamp-schedule-api/tree/main/client).
+Currently, the known differences are:
 
-Note that if you make use of `fake_epoch` that this only changes the start and end timestamps (`start_date` and `end_date`) it does not affect the times (`start_time` and `end_time`, why these fields are there when the former fields are actually a timestamp I have no bloody idea).
+- `start_date` and `end_date` being valid RFC 3339 timestamps
+- `start_time` and `end_time` being removed (duplicates of the timestamps, RFC 3339 parsing is not difficult)
 
 ## Examples
 
