@@ -11,7 +11,7 @@ It adds a few nice features on top of the official API:
 - Listing venues
 
 The format of the data returned by the adapter is very similar to what the official EMF API is (with the expection of correctly formatted timestamps).
-It does rely on fields being specified in the [`appropriate types`](https://github.com/DanNixon/emfcamp-schedule-api/tree/main/client/src/schedule/event) in [`client`](https://github.com/DanNixon/emfcamp-schedule-api/tree/main/client).
+It does rely on fields being specified in the [appropriate types](https://github.com/DanNixon/emfcamp-schedule-api/tree/main/client/src/schedule/event) in [`client`](https://github.com/DanNixon/emfcamp-schedule-api/tree/main/client).
 Currently, the known differences are:
 
 - `start_date` and `end_date` being valid RFC 3339 timestamps
