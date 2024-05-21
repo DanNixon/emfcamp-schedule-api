@@ -53,6 +53,7 @@ jobs:
         package:
           - emfcamp-schedule-api-adapter
           - emfcamp-schedule-cli
+          - emfcamp-schedule-mqtt-announcer
 
     steps:
       - uses: actions/checkout@v4
