@@ -51,7 +51,8 @@
 
         packages =
           import ./adapter {inherit pkgs rustPlatform version gitRevision;}
-          // import ./cli {inherit pkgs rustPlatform version gitRevision;};
+          // import ./cli {inherit pkgs rustPlatform version gitRevision;}
+          // import ./mqtt-announcer {inherit pkgs rustPlatform version gitRevision;};
       }
     );
 }
