@@ -4,9 +4,7 @@ Various things related to ingesting, manipulating and otherwise using the [EMFca
 
 Includes:
 
-- A Rust client library
-- A CLI
-- An adapter that sits between the official API, adding some nice development features and fixing the fucky timestamps
-- A tool to send event announcements via MQTT
-
-Still very much a work in progress, and very much subject to change until the 2024 schedule API is a thing.
+- [A Rust client library](./client)
+- [A CLI](./cli)
+- [An adapter that sits between the official API, adding some nice development features and fixing the fucky timestamps](./adapter)
+- [A tool to send event announcements via MQTT](./mqtt-announcer)
