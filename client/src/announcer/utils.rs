@@ -24,7 +24,10 @@ pub(super) fn get_duration_before_event_notification(
     let delta = (event.start + start_offset) - timepoint;
 
     delta.to_std().unwrap_or_else(|e| {
-        warn!("Negative time before event, something may be fucky... ({e})");
+        warn!(
+            "Negative time before event ({}s), something may be fucky... ({e})",
+            delta.num_seconds()
+        );
         std::time::Duration::ZERO
     })
 }
