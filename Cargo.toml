@@ -27,7 +27,7 @@ metrics = "0.22.3"
 metrics-exporter-prometheus = { version = "0.14.0", default-features = false, features = ["http-listener"] }
 reqwest = { version = "0.11.27", default-features = false, features = ["json", "rustls-tls"] }
 rumqttc = "0.24.0"
-serde = { version = "1.0.202", features = ["derive"] }
+serde = { version = "1.0.203", features = ["derive"] }
 serde_json = "1.0.117"
 serde_with = "3.8.1"
 termcolor = "1.4.1"
