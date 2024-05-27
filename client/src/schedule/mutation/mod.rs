@@ -3,10 +3,12 @@ mod ends_after;
 mod fake_start_epoch;
 mod sorted_by_start_time;
 mod starts_after;
+mod starts_before;
 
 pub use self::{
     at_venues::AtVenues, ends_after::EndsAfter, fake_start_epoch::FakeStartEpoch,
     sorted_by_start_time::SortedByStartTime, starts_after::StartsAfter,
+    starts_before::StartsBefore,
 };
 use super::event::Event;
 
