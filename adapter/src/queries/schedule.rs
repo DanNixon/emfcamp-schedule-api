@@ -20,6 +20,9 @@ pub(crate) struct ScheduleQueryParams {
     /// Include only events that start after this time.
     starting_after: Option<DateTime<FixedOffset>>,
 
+    /// Include only events that start before this time.
+    starting_before: Option<DateTime<FixedOffset>>,
+
     /// Include only events that end after this time.
     ending_after: Option<DateTime<FixedOffset>>,
 
@@ -38,6 +41,10 @@ impl From<ScheduleQueryParams> for mutation::Mutators {
 
         if let Some(starting_after) = params.starting_after {
             mutators.push(Box::new(mutation::StartsAfter::new(starting_after)));
+        }
+
+        if let Some(starting_before) = params.starting_before {
+            mutators.push(Box::new(mutation::StartsBefore::new(starting_before)));
         }
 
         if let Some(ending_after) = params.ending_after {
