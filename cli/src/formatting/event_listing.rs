@@ -1,12 +1,13 @@
 use ascii_table::AsciiTable;
 use clap::ValueEnum;
-use emfcamp_schedule_api::schedule::event::Event;
+use emfcamp_schedule_api::schedule::event::{Event, Kind};
 use std::fmt::Display;
 
 #[derive(Debug, Clone, ValueEnum)]
 pub(crate) enum Column {
     Id,
     Slug,
+    Type,
     Start,
     StartVerbose,
     End,
@@ -22,6 +23,13 @@ impl Column {
         match self {
             Column::Id => event.id.to_string(),
             Column::Slug => event.slug.clone(),
+            Column::Type => match event.kind {
+                Kind::Talk => "Talk",
+                Kind::Workshop(_) => "Workshop",
+                Kind::YouthWorkshop => "Youth Workshop",
+                Kind::Performance => "Performance",
+            }
+            .to_string(),
             Column::Start => event.start.format("%a %H:%M").to_string(),
             Column::StartVerbose => event.start.format("%Y-%m-%d %H:%M").to_string(),
             Column::End => event.end.format("%a %H:%M").to_string(),
@@ -39,6 +47,7 @@ impl Display for Column {
         let text = match &self {
             Column::Id => "ID",
             Column::Slug => "Slug",
+            Column::Type => "Type",
             Column::Start => "Start",
             Column::StartVerbose => "Start",
             Column::End => "End",
@@ -58,6 +67,7 @@ pub(crate) fn default_columns() -> Vec<Column> {
         Column::Start,
         Column::End,
         Column::Venue,
+        Column::Type,
         Column::Title,
     ]
 }
