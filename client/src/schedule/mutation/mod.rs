@@ -12,23 +12,25 @@ pub use self::{
 };
 use super::event::Event;
 
+pub type BoxedMutator = Box<dyn Mutator + Send + Sync>;
+
 #[derive(Default)]
 pub struct Mutators {
-    mutators: Vec<Box<dyn Mutator>>,
+    mutators: Vec<BoxedMutator>,
 }
 
 impl Mutators {
-    pub fn new(mutators: Vec<Box<dyn Mutator>>) -> Self {
+    pub fn new(mutators: Vec<BoxedMutator>) -> Self {
         Self { mutators }
     }
 
-    pub fn new_single(mutator: Box<dyn Mutator>) -> Self {
+    pub fn new_single(mutator: BoxedMutator) -> Self {
         Self {
             mutators: vec![mutator],
         }
     }
 
-    pub fn push(&mut self, mutator: Box<dyn Mutator>) {
+    pub fn push(&mut self, mutator: BoxedMutator) {
         self.mutators.push(mutator);
     }
 
