@@ -32,7 +32,7 @@ serde_json = "1.0.117"
 serde_with = "3.8.1"
 termcolor = "1.4.1"
 thiserror = "1.0.61"
-tokio = { version = "1.37.0", features = ["rt-multi-thread", "macros", "signal"] }
+tokio = { version = "1.38.0", features = ["rt-multi-thread", "macros", "signal"] }
 tracing = "0.1.40"
 tracing-subscriber = "0.3.18"
 url = { version = "2.2.2", features = ["serde"] }
