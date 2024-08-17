@@ -24,7 +24,7 @@
 
         version = cargoToml.workspace.package.version;
         gitRevision = self.shortRev or self.dirtyShortRev;
-      in rec {
+      in {
         devShell = pkgs.mkShell {
           packages = with pkgs; [
             # Rust toolchain
