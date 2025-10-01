@@ -14,11 +14,11 @@ version = "0.0.1"
 edition = "2021"
 
 [workspace.dependencies]
-anyhow = "1.0.99"
+anyhow = "1.0.100"
 ascii_table = "=4.0.5"
 axum = { version = "0.7.9", features = ["macros"] }
 axum-extra = { version = "0.9.6", features = ["query"] }
-chrono = { version = "0.4.41", features = ["serde"] }
+chrono = { version = "0.4.42", features = ["serde"] }
 clap = { version = "~4.4.0", features = ["derive", "env"] }
 clap_complete = "~4.4.10"
 derive_builder = "0.20.2"
@@ -27,9 +27,9 @@ metrics = "0.22.4"
 metrics-exporter-prometheus = { version = "0.14.0", default-features = false, features = ["http-listener"] }
 reqwest = { version = "0.11.27", default-features = false, features = ["json", "rustls-tls"] }
 rumqttc = "0.24.0"
-serde = { version = "1.0.219", features = ["derive"] }
-serde_json = "1.0.143"
-serde_with = "3.14.0"
+serde = { version = "1.0.228", features = ["derive"] }
+serde_json = "1.0.145"
+serde_with = "3.14.1"
 termcolor = "1.4.1"
 thiserror = "1.0.69"
 tokio = { version = "1.47.1", features = ["rt-multi-thread", "macros", "signal"] }
