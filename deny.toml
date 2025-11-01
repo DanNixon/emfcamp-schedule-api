@@ -8,12 +8,13 @@ version = 2
 allow = [
   "MIT",
   "Apache-2.0",
-  "MPL-2.0",
   "BSD-3-Clause",
   "ISC",
   "Unicode-DFS-2016",
   "Unicode-3.0",
   "Zlib",
+  "OpenSSL",
+  "CDLA-Permissive-2.0",
 ]
 
 [[licenses.clarify]]
