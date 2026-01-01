@@ -1,4 +1,4 @@
-use ascii_table::AsciiTable;
+use ascii_table::{AsciiTable, Width};
 use clap::ValueEnum;
 use emfcamp_schedule_api::schedule::event::{Event, Kind};
 use std::fmt::Display;
@@ -75,7 +75,7 @@ pub(crate) fn default_columns() -> Vec<Column> {
 pub(crate) fn print_table(max_width: usize, columns: &[Column], events: &[Event]) {
     let mut table = AsciiTable::default();
 
-    table.set_max_width(max_width);
+    table.set_max_width(Width::Fixed(max_width));
 
     for (i, col) in columns.iter().enumerate() {
         table.column(i).set_header(col.to_string());
@@ -91,5 +91,5 @@ pub(crate) fn print_table(max_width: usize, columns: &[Column], events: &[Event]
         })
         .collect();
 
-    table.print(table_data);
+    table.println(table_data);
 }
