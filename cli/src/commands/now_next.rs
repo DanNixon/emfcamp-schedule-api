@@ -1,5 +1,5 @@
 use super::{NowCommonOptions, TableWidthCommonOptions, VenueFilterCommonOptions};
-use ascii_table::AsciiTable;
+use ascii_table::{AsciiTable, Width};
 use clap::Parser;
 use emfcamp_schedule_api::schedule::{
     event::Event,
@@ -38,7 +38,7 @@ pub(crate) fn run(args: NowNextOptions, mut schedule: Schedule) {
     println!("Now: {}", now_next.now);
 
     let mut table = AsciiTable::default();
-    table.set_max_width(args.width.max_width);
+    table.set_max_width(Width::Fixed(args.width.max_width));
 
     table.column(0).set_header("Venue");
     table.column(1).set_header("Now");
@@ -56,7 +56,7 @@ pub(crate) fn run(args: NowNextOptions, mut schedule: Schedule) {
         })
         .collect();
 
-    table.print(table_data);
+    table.println(table_data);
 }
 
 fn format_event_now(events: &[Event]) -> String {
