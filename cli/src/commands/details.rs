@@ -1,5 +1,5 @@
 use clap::Parser;
-use emfcamp_schedule_api::schedule::{event::Event, Schedule};
+use emfcamp_schedule_api::schedule::{Schedule, event::Event};
 use termcolor::{Color, ColorChoice, ColorSpec, StandardStream, WriteColor};
 
 #[derive(Debug, Parser)]

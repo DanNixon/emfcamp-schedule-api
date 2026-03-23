@@ -1,7 +1,7 @@
 use anyhow::Result;
 use emfcamp_schedule_api::{
-    announcer::{Announcer, AnnouncerSettingsBuilder},
     Client,
+    announcer::{Announcer, AnnouncerSettingsBuilder},
 };
 use url::Url;
 

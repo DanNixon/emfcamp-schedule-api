@@ -18,8 +18,8 @@
 use anyhow::Result;
 use chrono::{DateTime, FixedOffset, SecondsFormat, Utc};
 use emfcamp_schedule_api::{
-    announcer::{Announcer, AnnouncerPollResult, AnnouncerSettingsBuilder},
     Client,
+    announcer::{Announcer, AnnouncerPollResult, AnnouncerSettingsBuilder},
 };
 use tracing::{error, info};
 use url::Url;

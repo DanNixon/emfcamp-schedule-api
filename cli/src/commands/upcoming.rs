@@ -2,8 +2,8 @@ use super::{ListingTableCommonOptions, NowCommonOptions, VenueFilterCommonOption
 use crate::formatting::event_listing;
 use clap::Parser;
 use emfcamp_schedule_api::schedule::{
-    mutation::{self, Mutators, SortedByStartTime},
     Schedule,
+    mutation::{self, Mutators, SortedByStartTime},
 };
 
 #[derive(Debug, Parser)]

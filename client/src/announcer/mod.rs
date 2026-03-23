@@ -3,8 +3,8 @@ mod test;
 mod utils;
 
 use crate::{
-    schedule::{event::Event, Schedule},
     Client,
+    schedule::{Schedule, event::Event},
 };
 use chrono::{DateTime, Duration as ChronoDuration, FixedOffset, Utc};
 use derive_builder::Builder;
@@ -192,11 +192,15 @@ fn get_next_event_to_announce(
     match last_notified_event_marker {
         Some(marker) => match events.iter().position(|event| marker.matches(event)) {
             Some(idx) => {
-                debug!("Matched last notified event marker, picking next in schedule as next to announce");
+                debug!(
+                    "Matched last notified event marker, picking next in schedule as next to announce"
+                );
                 events.get(idx + 1).cloned()
             }
             None => {
-                debug!("Last notified event marker matched no events (something's fucky...), picking next chronological event from last announced as next to announce");
+                debug!(
+                    "Last notified event marker matched no events (something's fucky...), picking next chronological event from last announced as next to announce"
+                );
                 events
                     .iter()
                     .find(|event| event.start > marker.start)
@@ -205,8 +209,8 @@ fn get_next_event_to_announce(
         },
         None => {
             debug!(
-                    "No last notified event marker, picking next in schedule chronologically from now as next to announce"
-                );
+                "No last notified event marker, picking next in schedule chronologically from now as next to announce"
+            );
             events
                 .iter()
                 .find(|event| event.start + event_offset >= now)

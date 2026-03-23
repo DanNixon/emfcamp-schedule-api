@@ -1,10 +1,10 @@
 use crate::{
+    Client,
     schedule::{
+        Schedule,
         event::Event,
         mutation::{Mutators, SortedByStartTime},
-        Schedule,
     },
-    Client,
 };
 use chrono::{DateTime, Duration as ChronoDuration, FixedOffset};
 use tokio::time::Duration as TokioDuration;

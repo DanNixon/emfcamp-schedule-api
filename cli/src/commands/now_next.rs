@@ -2,9 +2,9 @@ use super::{NowCommonOptions, TableWidthCommonOptions, VenueFilterCommonOptions}
 use ascii_table::{AsciiTable, Width};
 use clap::Parser;
 use emfcamp_schedule_api::schedule::{
+    Schedule,
     event::Event,
     mutation::{self, Mutators, SortedByStartTime},
-    Schedule,
 };
 
 #[derive(Debug, Parser)]

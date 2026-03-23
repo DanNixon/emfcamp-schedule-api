@@ -1,4 +1,4 @@
-use crate::schedule::{event::Event, Schedule};
+use crate::schedule::{Schedule, event::Event};
 use url::Url;
 
 #[derive(Debug, Clone)]
