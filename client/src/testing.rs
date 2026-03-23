@@ -1,9 +1,9 @@
 use crate::schedule::event::Event;
 use axum::{
+    Json, Router,
     extract::State,
     response::{IntoResponse, Response},
     routing::get,
-    Json, Router,
 };
 use std::{
     net::SocketAddr,

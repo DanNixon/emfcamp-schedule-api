@@ -5,7 +5,7 @@ use crate::queries::now_and_next::now_and_next;
 use crate::queries::schedule::schedule;
 use crate::queries::venues::venues;
 use anyhow::Result;
-use axum::{routing::get, Router};
+use axum::{Router, routing::get};
 use clap::Parser;
 use std::net::SocketAddr;
 use tokio::net::TcpListener;

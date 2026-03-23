@@ -3,7 +3,7 @@ mod timestamp;
 
 use chrono::{DateTime, FixedOffset};
 use serde::{Deserialize, Serialize};
-use serde_with::{serde_as, NoneAsEmptyString};
+use serde_with::{NoneAsEmptyString, serde_as};
 use std::cmp::Ordering;
 use url::Url;
 

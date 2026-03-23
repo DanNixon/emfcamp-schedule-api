@@ -4,8 +4,8 @@ use crate::smol_event::SmolEvent;
 use chrono::Duration as ChronoDuration;
 use clap::Parser;
 use emfcamp_schedule_api::{
-    announcer::{Announcer, AnnouncerPollResult, AnnouncerSettingsBuilder},
     Client as ScheduleClient,
+    announcer::{Announcer, AnnouncerPollResult, AnnouncerSettingsBuilder},
 };
 use metrics::{counter, describe_counter};
 use metrics_exporter_prometheus::PrometheusBuilder;
@@ -107,9 +107,11 @@ async fn main() -> anyhow::Result<()> {
             true,
         ));
 
-        if cli.mqtt_username.is_some() && cli.mqtt_password.is_some() {
+        if let Some(mqtt_username) = cli.mqtt_username
+            && let Some(mqtt_password) = cli.mqtt_password
+        {
             info!("Using supplied MQTT credentials");
-            options.set_credentials(cli.mqtt_username.unwrap(), cli.mqtt_password.unwrap());
+            options.set_credentials(mqtt_username, mqtt_password);
         } else {
             info!("Not attempting to authenticate MQTT connection");
         }
